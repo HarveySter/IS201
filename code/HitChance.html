@@ -1,0 +1,55 @@
+<!--Hit chance calculator. Built using CoPilot and Brinton Call, 12/10/24. The equation is the hit chance equation for EVEONLINE, a MMO spaceship game. https://wiki.eveuniversity.org/Turret_mechanics-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hit Chance Calculator</title>
+    <link rel="stylesheet" href="../css/hitchancestyles.css">
+</head>
+<body>
+    <a href="../index.html">Home</a> |
+    <a href="fromscratch.html">From Scratch</a> |
+    <a href="#">Hit Chance Calculator</a>
+    <header>
+        <h1>Hit Chance Calculator</h1>
+    </header>
+    <main>
+        <label for="angular">Angular Velocity (rad/s):</label>
+        <input type="number" id="angular" step="0.01"><br>
+        <label for="tracking">Tracking Value:</label>
+        <input type="number" id="tracking" step="0.01"><br>
+        <label for="signature">Signature Radius:</label>
+        <input type="number" id="signature" step="0.01"><br>
+        <label for="distance">Distance (m):</label>
+        <input type="number" id="distance" step="0.01"><br>
+        <label for="optimal">Optimal Range (m):</label>
+        <input type="number" id="optimal" step="0.01"><br>
+        <label for="falloff">Falloff Range (m):</label>
+        <input type="number" id="falloff" step="0.01"><br>
+        <button onclick="calculateHitChance()">Calculate Hit Chance</button>
+        <p id="result"></p>
+    </main>
+    <footer>
+        <p>&copy; 2024 CCP Games</p>
+    </footer>
+    <script>
+        function calculateHitChance() {
+            const angular = parseFloat(document.getElementById('angular').value);
+            const tracking = parseFloat(document.getElementById('tracking').value);
+            const signature = parseFloat(document.getElementById('signature').value);
+            const distance = parseFloat(document.getElementById('distance').value);
+            const optimal = parseFloat(document.getElementById('optimal').value);
+            const falloff = parseFloat(document.getElementById('falloff').value);
+
+            const trackingTerm = Math.pow((angular * 40000) / (tracking * signature), 2);
+            const rangeTerm = Math.pow(Math.max(0, distance - optimal) / falloff, 2);
+
+            const hitChance = 0.5 ** (trackingTerm + rangeTerm);
+
+            document.getElementById('result').innerText = `Hit Chance: ${(hitChance * 100).toFixed(2)}%`;
+        }
+    </script>
+</body>
+</html>
